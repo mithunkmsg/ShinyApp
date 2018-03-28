@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "br(), br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),br(),\nh4(div(\"CITY_WISE PLOT\",style=\"color:blue\")),\nradioButtons(\"Category\",\"2. Please select a Type:\",choices = levels(df2$Category),selected = \"Domestic\"),\nselectInput(\"City\",\"1. Please select a City:\",choices = levels(df2$City_Name),selected = \"Mumbai\"),\nbr(),br(),br(),br(),br(),br()    \n",
+    "created" : 1522216212174.000,
+    "dirty" : true,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "4159798504",
+    "id" : "EC750823",
+    "lastKnownWriteTime" : 0,
+    "last_content_update" : 1522213240461,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "tempName" : "Untitled3"
+    },
+    "relative_order" : 9,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

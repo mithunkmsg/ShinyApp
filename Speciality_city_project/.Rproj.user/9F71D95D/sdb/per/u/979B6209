@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "library(quantmod)\nlibrary(TTR)\nlibrary(tseries)\ninstall.packages(\"timeSeries\")\nlibrary(timeSeries)\nlibrary(forecast)\nlibrary(xts)\ngetSymbols('TECHM.NS', from='2012-01-01', to='2015-01-01')\nstock_prices = TECHM.NS[,4]\nView(stock_prices)\n\n# Compute the log returns for the stock\nstock = diff(log(stock_prices),lag=1)\nstock = stock[!is.na(stock)]\n\n# Plot log returns \nplot(stock,type='l', main='log returns plot')\n\n\n# Conduct ADF test on log returns series(to check my series whether stationary or non-stationary)\nprint(adf.test(stock)) #if p<0.05 then stationary\n\n# Split the dataset in two parts - training and testing\nbreakpoint = floor(nrow(stock)*(2.9/3))\n\n\n# Apply the ACF and PACF functions\npar(mfrow = c(1,1))\nacf.stock = acf(stock[c(1:breakpoint),], main='ACF Plot', lag.max=100)  #gives p\npacf.stock = pacf(stock[c(1:breakpoint),], main='PACF Plot', lag.max=100) #gives q\n\n\n#Here my arima parameter is arima(p=2,d=0,q=2)\n\n\n# Initialzing an xts object for Actual log returns\nActual_series = xts(0,as.Date(\"2014-11-25\",\"%Y-%m-%d\"))\n\n# Initialzing a dataframe for the forecasted return series\nforecasted_series = data.frame(Forecasted = numeric())\n\nfor (b in breakpoint:(nrow(stock)-1)) {\n  \n  stock_train = stock[1:b, ]\n  stock_test = stock[(b+1):nrow(stock), ]\n\n  # Summary of the ARIMA model using the determined (p,d,q) parameters\n  fit = arima(stock_train, order = c(2, 0, 2),include.mean=FALSE)\n  summary(fit)\n  \n  # plotting a acf plot of the residuals\n  acf(fit$residuals,main=\"Residuals plot\")\n  \n  # Forecasting the log returns\n  arima.forecast = forecast.Arima(fit, h = 1,level=99)\n  summary(arima.forecast)\n  \n  # plotting the forecast\n  par(mfrow=c(1,1))\n  plot(arima.forecast, main = \"ARIMA Forecast\")\n  \n  # Creating a series of forecasted returns for the forecasted period\n  forecasted_series = rbind(forecasted_series,arima.forecast$mean[1])\n  colnames(forecasted_series) = c(\"Forecasted\")\n  \n  # Creating a series of actual returns for the forecasted period\n  Actual_return = stock[(b+1),]\n  Actual_series = c(Actual_series,xts(Actual_return))\n  rm(Actual_return)\n  \n  print(stock_prices[(b+1),])\n  print(stock_prices[(b+2),])\n  \n}\n\n\n\n\n\n\n\n\n\n\n\n\n",
+    "created" : 1521625880395.000,
+    "dirty" : true,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "3531842371",
+    "id" : "979B6209",
+    "lastKnownWriteTime" : 21392300099829876,
+    "last_content_update" : 1521628074681,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "tempName" : "Untitled2"
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
