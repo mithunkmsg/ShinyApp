@@ -3,7 +3,6 @@ library(dplyr)
 library(xts)
 library(dygraphs)
 library(ggplot2)
-setwd("E:/DATA SCIENCE/credihealth/graph data/App2")
 speciality_wise<-readRDS("speciality_wise.rda")
 city_wise<-readRDS("city_wise.rda")
 speciality_wise[is.na(speciality_wise)]<-0
